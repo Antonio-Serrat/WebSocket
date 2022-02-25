@@ -2,20 +2,17 @@ const express = require('express')
 const { Server } = require('socket.io')
 const path = require('path');
 const http = require('http')
-const fetch = require ('node-fetch')
-
+const Product = require('./models/products')
+const upload = require('./middlewares/file');
+const { engine } = require('express-handlebars');
+const fetch = require('node-fetch')
 
 const app = express();
 const server = http.createServer(app)
 const PORT = process.env.PORT | 8080
 const io = new Server(server)
-
-// const homeRouter = require('./routes/home');
-const { engine } = require('express-handlebars');
-const Product = require('./models/products')
 const productModel = new Product();
-const upload = require('./middlewares/file');
-let producto = {}
+
 
 
 app.use(express.json())
@@ -34,17 +31,26 @@ app.get("/", async (req, res) => {
   res.render(path.join(__dirname, './views/index.handlebars'))
 });
 
-app.post("/", upload.single("thumbnail"), async (req, res) => {
+
+app.post("/products", upload.single("thumbnail"), async (req, res) =>{
     const { title, price} = req.body;
     const thumbnail = path.join("static/img/" + req.file.filename)
     await productModel.save(title, price+"$", thumbnail).then(id =>{return id});
-    res.render(path.join(__dirname, './views/index.handlebars'))
+    res.end()
   })
 
-io.on("connection", async (socket) => {
+io.on("connection", (socket) => {
   console.log(socket.id)
   io.emit('index', null)
+  io.emit('post', socket.id)
+  // socket.on('post',  (formData) => {
+  //   console.log("ap")
+  //    fetch('http://localhost:8080/', {
+  //     method: 'POST',
+  //     body: formData
+  //   })
+  // })
+ 
 })
-
 
 server.listen(PORT, () => console.log(`listening on port: ${PORT}`))

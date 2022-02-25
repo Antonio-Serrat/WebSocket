@@ -4,7 +4,7 @@ const path = require('path');
 
 class Products {
     constructor() {
-        this.nombreArchivo = path.join(__dirname, "../database/products.json");
+        this.nombreArchivo = path.join(__dirname, "../public/database/products.json");
     }
 
     async save(title, price, thumbnail) {
