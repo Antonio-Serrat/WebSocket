@@ -4,16 +4,10 @@ const cards = document.querySelector('#cards')
 const div = document.createElement('div')
 const h4 = document.createElement('h4')
 const btn = document.querySelector('#button')
-
 const form = document.querySelector('#formulary')
-
 let title = document.querySelector('#title')
 let price = document.querySelector('#price')
 let file = document.querySelector('#thumbnail')
-// formData.set('title', title)
-// formData.append('price', price)
-// formData.append('file', file)
-
 
 // section NO cards
 div.className = 'col-12 my-5 text-center'
@@ -24,16 +18,18 @@ div.appendChild(h4)
 
 
 socket.on("index", () => {
+    renderIndex()
+})
+function renderIndex() {
     fetch('/static/database/products.json')
         .then((res) => {
             return res.json()
         })
         .then((productos) => {
-            
             if (productos.length == 0) {
                 cards.appendChild(div)
             } else {
-                cards.innerHTML=""
+                cards.innerHTML = ""
                 productos.forEach(producto => {
                     //create elements
                     const div1 = document.createElement('div')
@@ -70,31 +66,41 @@ socket.on("index", () => {
 
             }
         })
-})
-
-function renderTitle(formData){
+}
+function renderTitle(formData) {
     const titleFd = formData.get('title')
     title.textContent = titleFd
 }
-function renderPrice(formData){
+function renderPrice(formData) {
     const priceFd = formData.get('price')
     price.textContent = priceFd
 }
-function renderFile(formData){
+function renderFile(formData) {
     const fileFd = formData.get('thumbnail')
+
     file.textContent = fileFd
 }
+function cleanInputs() {
+    form.reset()
+}
 
-socket.on('post', async (data) => {
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault()
-        const formData = new FormData(e.currentTarget)
-        renderTitle(formData)
-        renderPrice(formData)
-        renderFile(formData)
-        await fetch('http://localhost:8080/products', {
-              method: 'POST',
-              body: formData
-        })
+
+form.addEventListener('submit', async (e) => {
+    e.preventDefault()
+    const formData = new FormData(e.currentTarget)
+    renderTitle(formData)
+    renderPrice(formData)
+    renderFile(formData)
+    await fetch(`${form.baseURI}`, {
+        method: 'POST',
+        body: formData
     })
+    socket.emit('reload', null)
 })
+
+socket.on('refresh', () => {
+    cleanInputs()
+    renderIndex()
+})
+
+

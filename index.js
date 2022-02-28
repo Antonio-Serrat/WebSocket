@@ -6,6 +6,7 @@ const Product = require('./models/products')
 const upload = require('./middlewares/file');
 const { engine } = require('express-handlebars');
 const fetch = require('node-fetch')
+const cors = require('cors');
 
 const app = express();
 const server = http.createServer(app)
@@ -14,7 +15,13 @@ const io = new Server(server)
 const productModel = new Product();
 
 
-
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+  res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
+  next();
+});
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
@@ -32,7 +39,7 @@ app.get("/", async (req, res) => {
 });
 
 
-app.post("/products", upload.single("thumbnail"), async (req, res) =>{
+app.post("/", upload.single("thumbnail"), async (req, res) =>{
     const { title, price} = req.body;
     const thumbnail = path.join("static/img/" + req.file.filename)
     await productModel.save(title, price+"$", thumbnail).then(id =>{return id});
@@ -40,17 +47,23 @@ app.post("/products", upload.single("thumbnail"), async (req, res) =>{
   })
 
 io.on("connection", (socket) => {
-  console.log(socket.id)
-  io.emit('index', null)
-  io.emit('post', socket.id)
-  // socket.on('post',  (formData) => {
-  //   console.log("ap")
-  //    fetch('http://localhost:8080/', {
-  //     method: 'POST',
-  //     body: formData
-  //   })
+  console.log(`Nuevo usuario conectado: ${socket.id}`)
+
+  io.sockets.emit('index', null)
+  
+  // socket.on('post',() => {
+  //   socket.emit('post2', null)
   // })
- 
+
+  socket.on('reload', ()=> {
+    io.sockets.emit('refresh')
+  })
+
+
+
+
+
+
 })
 
 server.listen(PORT, () => console.log(`listening on port: ${PORT}`))

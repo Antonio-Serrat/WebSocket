@@ -1,17 +1,13 @@
 body{
     background-color: rgb(248, 193, 205);
 }
-.nav-link{
-    color:rgb(102, 58, 29);
+
+.nav-item{
+    color:rgb(243, 38, 99);
     font-size: 18px;
     font-weight: 500;
 }
-.nav-link.active{
-    color: rgb(240, 86, 132);
-}
-.nav-link:hover{
-    color: rgb(84, 44, 196);
-}
+
 .card{
     width: 15rem;
     margin-top: 5rem;
@@ -19,6 +15,7 @@ body{
     border-width: 0.4rem;
     border-color: rgb(241, 144, 99);
 }
+
 .title{
     color: rgb(236, 52, 46);
 }
