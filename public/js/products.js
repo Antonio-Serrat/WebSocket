@@ -9,6 +9,8 @@ let title = document.querySelector('#title')
 let price = document.querySelector('#price')
 let file = document.querySelector('#thumbnail')
 
+
+
 // section NO cards
 div.className = 'col-12 my-5 text-center'
 h4.className = 'title'
@@ -20,6 +22,25 @@ div.appendChild(h4)
 socket.on("index", () => {
     renderIndex()
 })
+
+form.addEventListener('submit', async (e) => {
+    e.preventDefault()
+    const formData = new FormData(e.currentTarget)
+    renderTitle(formData)
+    renderPrice(formData)
+    renderFile(formData)
+    await fetch(`${form.baseURI}`, {
+        method: 'POST',
+        body: formData
+    })
+    socket.emit('reload', null)
+})
+
+socket.on('refresh', () => {
+    cleanInputs()
+    renderIndex()
+})
+
 function renderIndex() {
     fetch('/static/database/products.json')
         .then((res) => {
@@ -83,24 +104,4 @@ function renderFile(formData) {
 function cleanInputs() {
     form.reset()
 }
-
-
-form.addEventListener('submit', async (e) => {
-    e.preventDefault()
-    const formData = new FormData(e.currentTarget)
-    renderTitle(formData)
-    renderPrice(formData)
-    renderFile(formData)
-    await fetch(`${form.baseURI}`, {
-        method: 'POST',
-        body: formData
-    })
-    socket.emit('reload', null)
-})
-
-socket.on('refresh', () => {
-    cleanInputs()
-    renderIndex()
-})
-
 

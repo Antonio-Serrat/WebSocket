@@ -3,17 +3,19 @@ const { Server } = require('socket.io')
 const path = require('path');
 const http = require('http')
 const Product = require('./models/products')
+const Message = require('./models/messages')
 const upload = require('./middlewares/file');
 const { engine } = require('express-handlebars');
-const fetch = require('node-fetch')
-const cors = require('cors');
+
 
 const app = express();
 const server = http.createServer(app)
 const PORT = process.env.PORT | 8080
 const io = new Server(server)
 const productModel = new Product();
+const messageModel = new Message()
 
+const messages = []
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
@@ -50,17 +52,15 @@ io.on("connection", (socket) => {
   console.log(`Nuevo usuario conectado: ${socket.id}`)
 
   io.sockets.emit('index', null)
-  
-  // socket.on('post',() => {
-  //   socket.emit('post2', null)
-  // })
 
   socket.on('reload', ()=> {
-    io.sockets.emit('refresh')
+    io.sockets.emit('refresh', null)
   })
-
-
-
+ 
+  socket.on('message', (data)=>{
+    messageModel.save(data.name, data.date, data.message)
+    io.sockets.emit('new-messages', null)
+  })
 
 
 
