@@ -12,7 +12,7 @@ socket.on('index', () => {
     renderChat()
 })
 
-btnMessage.addEventListener('click', (e) => {
+btnMessage.addEventListener('keyup', (e) => {
     e.preventDefault()
     if(!messageText.value){
         return
@@ -21,9 +21,10 @@ btnMessage.addEventListener('click', (e) => {
     message.name = userName.value
     message.date = Date.now(),
     message.message = messageText.value
-    
-    socket.emit('message', message)
-    messageText.value = null
+    if(e.code === "Enter"){
+        socket.emit('message', message)
+        messageText.value = null
+    }
 })
 
 socket.on('new-messages', ()=>{
