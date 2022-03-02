@@ -10,7 +10,7 @@ body{
 }
 
 .name-input{
-    background-color: #242e3b;
+    background-color: #242e3b3f;
     align-items: center;
     text-align: center;
 }
@@ -24,10 +24,10 @@ body{
 
 #putName{
     width: 100%;
-    color: #242e3b;
+    color: #03234e;
     font-size: 20px;
     font-weight: 500;
-    background-color: #fd8e26;
+    background-color: #af845cb0;
 }
 
 #userName{
@@ -44,6 +44,14 @@ body{
 
 #btn-cart:hover{
     color: green;
+}
+
+.title{
+    text-align: center;
+}
+
+#products{
+    background-color: rgba(85, 143, 124, 0.151);
 }
 
 .card{
@@ -70,7 +78,7 @@ body{
     flex-direction: column;
     width: 100%;
     height: 500px;
-    background-color: rgb(143, 107, 107);
+    background-color: rgba(143, 107, 107, 0.61);
 }
 
 #messages .remote {
