@@ -118,6 +118,10 @@ body{
     font-size: 16px;
 }
 
+#messages .message-text{
+    margin-left: 1rem;
+}
+
 #messages .local .message-body {
     background: #3f688f;
     float: right;

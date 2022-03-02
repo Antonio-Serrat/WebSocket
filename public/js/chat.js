@@ -7,16 +7,10 @@ const divMessages = document.querySelector('#messages')
 
 
 const message = {}
-const users = []
 
 socket.on('index', () => {
     renderChat()
 })
-
-socket.on('users' , data => {
-    users = data
-})
-
 
 btnMessage.addEventListener('click', (e) => {
     e.preventDefault()
@@ -26,11 +20,6 @@ btnMessage.addEventListener('click', (e) => {
     if(!userName.value){
         return alert('El campo email no puede estar vacio')
     }
-    users.forEach(user =>{
-        if(userName.value === user.name )
-        return alert('El usuario ya esta en uso')
-
-    })
     
     message.name = userName.value
     message.date = Date.now(),
@@ -41,6 +30,7 @@ btnMessage.addEventListener('click', (e) => {
 })
 
 socket.on('new-messages', ()=>{
+
         renderChat()
 })
 
@@ -57,17 +47,18 @@ function renderChat(){
             const divUser = document.createElement('div')
             const divData = document.createElement('div')
             const divMessage = document.createElement('div')
+            const messageText = document.createElement('p')
             const spanName = document.createElement('span')
             const spanDate = document.createElement('span')
 
             //assign class & value
+            messageText.className = 'message-text'
+            messageText.innerHTML = msg.message
             divData.className = 'message-data'
             spanName.className = 'user'
             spanDate.className = 'date-time'
             spanDate.innerHTML = ` [${new Date(msg.date).toLocaleString()}]: `
-
             divMessage.className = 'message-body'
-            divMessage.innerHTML = msg.message
             
             // assign user Local or Remote
             if(msg.name == userName.value){
@@ -75,6 +66,7 @@ function renderChat(){
                 spanName.innerHTML = 'Yo'
                 divData.appendChild(spanDate)
                 divData.appendChild(spanName)
+                divMessage.appendChild(messageText)
                 divUser.appendChild(divData)
                 divUser.appendChild(divMessage)
             }else{
@@ -82,6 +74,7 @@ function renderChat(){
                 spanName.innerHTML = msg.name
                 divData.appendChild(spanName)
                 divData.appendChild(spanDate)
+                divMessage.appendChild(messageText)
                 divUser.appendChild(divData)
                 divUser.appendChild(divMessage)
             }

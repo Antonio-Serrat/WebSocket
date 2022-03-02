@@ -16,6 +16,7 @@ const productModel = new Product();
 const messageModel = new Message()
 
 const users = []
+let active = false
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
@@ -58,12 +59,6 @@ io.on("connection", (socket) => {
   })
  
   socket.on('message', (data)=>{
-    let user = {
-      name:data.name,
-      id : socket.id
-    }
-    users.push(user)
-    io.sockets.emit('users', users)
     messageModel.save(data.name, data.date, data.message)
     io.sockets.emit('new-messages', null)
   })
