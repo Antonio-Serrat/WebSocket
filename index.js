@@ -10,7 +10,7 @@ const { engine } = require('express-handlebars');
 
 const app = express();
 const server = http.createServer(app)
-const PORT = process.env.PORT | 8080
+const PORT = process.env.PORT || 8080
 const io = new Server(server)
 const productModel = new Product();
 const messageModel = new Message()
