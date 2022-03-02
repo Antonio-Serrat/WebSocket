@@ -9,6 +9,27 @@ body{
     list-style: none;
 }
 
+.name-input{
+    background-color: #242e3b;
+    align-items: center;
+    text-align: center;
+}
+
+.message-input{
+    background-color: rgba(50, 65, 65, 0.555);
+    text-align: right;   
+}
+
+
+
+#putName{
+    width: 100%;
+    color: #242e3b;
+    font-size: 20px;
+    font-weight: 500;
+    background-color: #fd8e26;
+}
+
 #userName{
     color: rgb(0, 135, 212);
     font-size: 15px;
@@ -33,11 +54,19 @@ body{
     border-color: rgb(241, 144, 99);
 }
 
-/* #messages{
-    background-color: darkgray;
-} */
+#message{
+    text-align: right;
+    width: 60%;
+}
+
+#btn-message{
+    text-align: center;
+    margin-left: 1rem;
+      
+}
 
 #chat{
+    margin-bottom: 2%;
     display: flex;
     flex-direction: column;
     width: 100%;
