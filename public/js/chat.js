@@ -7,16 +7,30 @@ const divMessages = document.querySelector('#messages')
 
 
 const message = {}
+const users = []
 
 socket.on('index', () => {
     renderChat()
 })
+
+socket.on('users' , data => {
+    users = data
+})
+
 
 btnMessage.addEventListener('click', (e) => {
     e.preventDefault()
     if(!messageText.value){
         return
     }
+    if(!userName.value){
+        return alert('El campo email no puede estar vacio')
+    }
+    users.forEach(user =>{
+        if(userName.value === user.name )
+        return alert('El usuario ya esta en uso')
+
+    })
     
     message.name = userName.value
     message.date = Date.now(),
