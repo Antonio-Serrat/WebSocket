@@ -23,6 +23,7 @@ btnMessage.addEventListener('click', (e) => {
     message.message = messageText.value
     
     socket.emit('message', message)
+    messageText.value = null
 })
 
 socket.on('new-messages', ()=>{
