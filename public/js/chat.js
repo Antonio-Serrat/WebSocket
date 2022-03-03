@@ -79,6 +79,7 @@ function renderChat(){
                 divUser.appendChild(divData)
                 divUser.appendChild(divMessage)
             }
+            
             divMessages.appendChild(divUser)
             divMessages.scrollTop = divMessages.scrollHeight
         })
