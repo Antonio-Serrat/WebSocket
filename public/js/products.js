@@ -84,7 +84,6 @@ function renderIndex() {
                     // put into index
                     cards.appendChild(div1)
                 });
-
             }
         })
 }
