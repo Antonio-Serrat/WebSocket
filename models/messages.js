@@ -7,8 +7,9 @@ class Messages {
         this.nombreArchivo = path.join(__dirname, "../public/database/messages.json");
     }
 
-    async save(name, date, message) {
+    async save(name, date, message, id) {
        let msg = {
+            id:id,
             name:name,
             date:date,
             message:message

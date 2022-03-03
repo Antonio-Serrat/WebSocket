@@ -24,6 +24,7 @@ btnMessage.addEventListener('click', (e) => {
     message.name = userName.value
     message.date = Date.now(),
     message.message = messageText.value
+    message.id = socket.id
     
     socket.emit('message', message)
     messageText.value = null
@@ -61,7 +62,7 @@ function renderChat(){
             divMessage.className = 'message-body'
             
             // assign user Local or Remote
-            if(msg.name == userName.value){
+            if(msg.name == userName.value && msg.id === socket.id ){
                 divUser.className = 'local' 
                 spanName.innerHTML = 'Yo'
                 divData.appendChild(spanDate)
