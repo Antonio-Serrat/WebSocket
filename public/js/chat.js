@@ -31,7 +31,6 @@ btnMessage.addEventListener('click', (e) => {
 })
 
 socket.on('new-messages', ()=>{
-
         renderChat()
 })
 

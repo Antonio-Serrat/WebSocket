@@ -60,7 +60,7 @@ io.on("connection", (socket) => {
  
   socket.on('message', (data)=>{
     messageModel.save(data.name, data.date, data.message, data.id)
-    io.sockets.emit('new-messages', null)
+    io.sockets.broadcast.emit('new-messages', null)
   })
 
 
